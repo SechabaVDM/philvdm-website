@@ -1,11 +1,11 @@
 /** Edit this file to update your portfolio copy. */
 export const site = {
-  name: "Phil VDM",
-  shortName: "PHIL VDM",
+  name: "Phillip van der Merwe",
+  shortName: "PHILLIP VDM",
   domain: "philvdm.co.za",
-  title: "Phil VDM — Games & Apps",
+  title: "Phillip van der Merwe — Games & Apps",
   description:
-    "Portfolio of Phil VDM — games like Echoes of the Terminal and apps like StudyQuest.",
+    "Portfolio of Phillip van der Merwe — games like Echoes of the Terminal and apps like StudyQuest.",
   tagline: "Games and apps that stay with you.",
   location: "South Africa",
   email: "philvdm@gmail.com",
@@ -13,7 +13,7 @@ export const site = {
     headline: "About Me",
     profileImage: "/images/profile.jpg",
     intro:
-      "I'm Phil VDM — an independent creator from South Africa building atmospheric games and useful student apps.",
+      "I'm Phillip van der Merwe — an independent creator from South Africa building atmospheric games and useful student apps.",
     paragraphs: [
       "I care about tension, mood, and products that feel alive — whether that's a stealth horror facility or a study app that makes schoolwork feel like progress.",
       "Echoes of the Terminal is my featured game. StudyQuest is the student productivity app I'm building alongside it.",
