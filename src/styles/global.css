@@ -1,0 +1,53 @@
+:root {
+  --ocean: #0a2f8a;
+  --ocean-deep: #071f5c;
+  --ink: #0a0a0a;
+  --paper: #f7f7f5;
+  --muted: #5a5a5a;
+  --line: rgba(10, 10, 10, 0.12);
+  --accent: #ffffff;
+  --accent-soft: rgba(255, 255, 255, 0.82);
+  --yellow: var(--accent);
+  --yellow-soft: var(--accent-soft);
+  --font-display: "Archivo Black", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --space: clamp(1.25rem, 4vw, 3rem);
+  --max: 70rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-body);
+  font-weight: 500;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--ocean);
+  color: #fff;
+}

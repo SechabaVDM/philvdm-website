@@ -1,0 +1,1036 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { site } from "../content/site";
+
+const featured = site.games.find((g) => g.featured) ?? site.games[0];
+---
+
+<BaseLayout>
+  <div class="page">
+    <SiteHeader />
+
+    <main id="top">
+      <section class="hero" aria-label="Introduction">
+        <div class="hero-bg" aria-hidden="true"></div>
+
+        <div class="hero-copy">
+          <p class="kicker">Games & apps</p>
+          <h1 class="brand">{site.shortName}</h1>
+          <p class="tagline">{site.tagline}</p>
+          <div class="cta-row">
+            <a class="btn btn-yellow" href={`#${featured.slug}`}>Play spotlight</a>
+            <a class="btn btn-ghost" href="#apps">See apps</a>
+          </div>
+        </div>
+
+        <a class="scroll-cue" href="#games" aria-label="Scroll down to games">
+          <span class="scroll-label">scroll down</span>
+          <svg class="squiggle" viewBox="0 0 48 72" fill="none" aria-hidden="true">
+            <path
+              class="squiggle-path"
+              d="M24 4 C 10 14, 38 22, 24 34 C 10 46, 38 54, 24 66"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <path
+              d="M16 56 L24 68 L32 56"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </section>
+
+      <section class="games-block" id="games">
+        <div class="games-head">
+          <div class="bubbles" aria-hidden="true">
+            <span class="bubble b1"></span>
+            <span class="bubble b2"></span>
+            <span class="bubble b3"></span>
+            <span class="bubble b4"></span>
+          </div>
+          <p class="games-kicker">Portfolio</p>
+          <h2>Games</h2>
+          <p class="games-lead">Titles in progress and on the way.</p>
+        </div>
+
+        <div class="library">
+          {
+            site.games.map((game, index) => (
+              <article
+                class:list={["game-card", `shade-${(index % 3) + 1}`, { featured: game.featured }]}
+                id={game.slug}
+                style={`--i: ${index}`}
+              >
+                <div class="card-bubbles" aria-hidden="true">
+                  <span class="orb o1"></span>
+                  <span class="orb o2"></span>
+                  <span class="orb o3"></span>
+                </div>
+
+                <div class="card-media teaser">
+                  <p class="teaser-badge">{game.teaserLabel ?? "Teaser"}</p>
+                  <div class="teaser-grid" role="list" aria-label={`${game.title} screenshots`}>
+                    {
+                      (game.screenshots ?? [{ src: game.image, alt: `${game.title} artwork` }]).map((shot) => (
+                        <figure class="shot-solo" role="listitem">
+                          <img src={shot.src} alt={shot.alt} width="640" height="400" />
+                        </figure>
+                      ))
+                    }
+                  </div>
+                </div>
+
+                <div class="card-copy">
+                  <p class="status">
+                    <span class="dot"></span>
+                    {game.status}
+                  </p>
+                  <h3>{game.title}</h3>
+                  <p class="blurb">{game.blurb}</p>
+                  <ul class="tags">
+                    {game.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                  <p class="year">{game.year}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="apps-block" id="apps">
+        <div class="apps-head">
+          <p class="games-kicker">Also building</p>
+          <h2>Apps</h2>
+          <p class="games-lead">Student tools with a quest-driven feel.</p>
+          <a class="apps-link" href="/apps">Open apps page →</a>
+        </div>
+
+        <div class="apps-library">
+          {
+            site.apps.map((app, index) => (
+              <article
+                class="app-teaser"
+                id={app.slug}
+                style={`--i: ${index}`}
+              >
+                <div class="app-teaser-media">
+                  <p class="teaser-badge app-badge">{app.teaserLabel ?? "App"}</p>
+                  <div class="phone-row" role="list" aria-label={`${app.title} screenshots`}>
+                    {(app.screenshots ?? []).slice(0, 4).map((shot) => (
+                      <figure class="phone-shot" role="listitem">
+                        <img src={shot.src} alt={shot.alt} width="280" height="560" />
+                      </figure>
+                    ))}
+                  </div>
+                </div>
+                <div class="app-teaser-copy">
+                  {app.icon && (
+                    <img class="mini-icon" src={app.icon} alt="" width="56" height="56" />
+                  )}
+                  <p class="status">
+                    <span class="dot purple"></span>
+                    {app.status} · {app.kind}
+                  </p>
+                  <h3>{app.title}</h3>
+                  <p class="blurb">{app.blurb}</p>
+                  <ul class="tags purple-tags">
+                    {app.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                  <a class="inline-link" href={`/apps#${app.slug}`}>View StudyQuest</a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="about-layout">
+          <div class="about-portrait">
+            <img
+              src={site.about.profileImage}
+              alt={`${site.name} profile photo`}
+              width="640"
+              height="640"
+            />
+          </div>
+          <div class="about-copy">
+            <p class="about-kicker">Profile</p>
+            <h2>{site.about.headline}</h2>
+            <p class="about-intro">{site.about.intro}</p>
+            <p class="about-body-text">{site.about.paragraphs[0]}</p>
+            <a class="about-link" href="/about">Read more</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contact-inner">
+          <h2>{site.contact.headline}</h2>
+          <p>{site.contact.body}</p>
+          <a class="mail" id="email" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>© {new Date().getFullYear()} {site.name}</p>
+      <p>{site.domain}</p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    overflow-x: clip;
+  }
+
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 6rem var(--space) 4rem;
+    background: var(--ocean);
+    color: #fff;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ocean);
+  }
+
+  .hero-copy {
+    width: min(100%, 40rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: rise 0.9s var(--ease) both;
+  }
+
+  .kicker {
+    margin: 0 0 0.85rem;
+    color: var(--yellow-soft);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .brand {
+    margin: 0 0 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(3.4rem, 11vw, 6.8rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+
+  .tagline {
+    margin: 0 0 2rem;
+    max-width: 22ch;
+    font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    width: 9rem;
+    color: var(--yellow);
+    text-decoration: none;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+
+  .scroll-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: lowercase;
+    white-space: nowrap;
+  }
+
+  .squiggle {
+    width: 2.4rem;
+    height: 3.6rem;
+  }
+
+  .squiggle-path {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    animation: draw-squiggle 2.2s var(--ease) infinite;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.85rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition:
+      transform 0.2s var(--ease),
+      background 0.2s var(--ease),
+      border-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn-yellow {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .btn-yellow:hover {
+    background: #e8eef8;
+  }
+
+  .btn-ghost {
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--yellow);
+    color: var(--yellow);
+  }
+
+  .games-block {
+    background: #ffffff;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .games-head {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(3rem, 7vw, 4.5rem) var(--space) 2rem;
+    background: #ffffff;
+    color: var(--ink);
+  }
+
+  .bubbles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 10s var(--ease) infinite alternate;
+  }
+
+  .b1 {
+    width: 8rem;
+    height: 8rem;
+    left: 6%;
+    top: 18%;
+    background: rgba(10, 47, 138, 0.08);
+  }
+
+  .b2 {
+    width: 12rem;
+    height: 12rem;
+    right: 4%;
+    top: -2rem;
+    background: rgba(10, 47, 138, 0.08);
+    animation-duration: 13s;
+  }
+
+  .b3 {
+    width: 4rem;
+    height: 4rem;
+    right: 30%;
+    bottom: 20%;
+    background: rgba(10, 47, 138, 0.1);
+    animation-duration: 8s;
+  }
+
+  .b4 {
+    width: 2.5rem;
+    height: 2.5rem;
+    left: 40%;
+    top: 40%;
+    background: rgba(10, 47, 138, 0.12);
+    animation-duration: 7s;
+  }
+
+  .games-kicker {
+    position: relative;
+    margin: 0 0 0.65rem;
+    color: var(--ocean);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .games-head h2 {
+    position: relative;
+    margin: 0 0 0.65rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 8vw, 4.5rem);
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .games-lead {
+    position: relative;
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+
+  .library {
+    width: min(100%, var(--max));
+    margin: 0 auto;
+    padding: 2rem var(--space) clamp(3rem, 6vw, 4.5rem);
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .game-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    align-items: center;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: 2rem;
+    overflow: hidden;
+    isolation: isolate;
+    scroll-margin-top: 5.5rem;
+    animation: bubble-in 0.8s var(--ease) both;
+    animation-delay: calc(var(--i) * 0.12s);
+    transition:
+      transform 0.35s var(--ease),
+      box-shadow 0.35s var(--ease);
+  }
+
+  .game-card:hover {
+    transform: translateY(-6px) scale(1.01);
+  }
+
+  .shade-1 {
+    background: linear-gradient(145deg, #ffffff 0%, #edf3ff 55%, #dce7fb 100%);
+    box-shadow: 0 18px 40px rgba(10, 47, 138, 0.12);
+    border: 1px solid rgba(10, 47, 138, 0.16);
+  }
+
+  .shade-2 {
+    background: linear-gradient(145deg, #f7f9fd 0%, #e4ecfa 100%);
+    box-shadow: 0 18px 40px rgba(7, 31, 92, 0.1);
+  }
+
+  .shade-3 {
+    background: linear-gradient(145deg, #fffdf5 0%, #f0f4fc 60%, #e8eef8 100%);
+    box-shadow: 0 18px 40px rgba(10, 47, 138, 0.1);
+  }
+
+  .card-bubbles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .game-card:hover .o1 {
+    transform: translate(-8px, -10px) scale(1.08);
+  }
+
+  .game-card:hover .o2 {
+    transform: translate(10px, 6px) scale(1.12);
+  }
+
+  .shade-1 .o1 {
+    width: 8rem;
+    height: 8rem;
+    right: -1.5rem;
+    top: -1.5rem;
+    background: rgba(10, 47, 138, 0.1);
+  }
+
+  .shade-1 .o2 {
+    width: 4.5rem;
+    height: 4.5rem;
+    left: 42%;
+    bottom: -1rem;
+    background: rgba(10, 47, 138, 0.1);
+  }
+
+  .shade-1 .o3 {
+    width: 2.5rem;
+    height: 2.5rem;
+    left: 8%;
+    top: 12%;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .card-media,
+  .card-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.35rem;
+    background: #050505;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  .teaser-badge {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    z-index: 2;
+    margin: 0;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(120, 255, 160, 0.55);
+    background: rgba(0, 12, 6, 0.78);
+    color: #8dffb0;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .teaser-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+    padding: 0.45rem;
+  }
+
+  .shot-solo {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #111;
+    aspect-ratio: 16 / 10;
+    transition:
+      transform 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+
+  .shot-solo:first-child {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 9;
+  }
+
+  .shot-solo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .shot-solo:hover {
+    transform: translateY(-3px);
+    border-color: rgba(120, 255, 160, 0.55);
+  }
+
+  @media (max-width: 560px) {
+    .teaser-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .shot-solo:first-child {
+      grid-column: auto;
+    }
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.75rem;
+    color: var(--ocean);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--ocean);
+    box-shadow: 0 0 0 3px rgba(10, 47, 138, 0.18);
+  }
+
+  .card-copy h3 {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 3.4vw, 2.35rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .blurb {
+    margin: 0 0 1.1rem;
+    color: var(--muted);
+    font-size: 1.02rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0 0 0.85rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags li {
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(10, 47, 138, 0.08);
+    color: var(--ocean-deep);
+    font-size: 0.78rem;
+    font-weight: 700;
+    transition:
+      background 0.25s var(--ease),
+      color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+
+  .game-card:hover .tags li {
+    background: var(--ocean);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .year {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .about {
+    background: #fff;
+    padding: clamp(3.5rem, 8vw, 5.5rem) var(--space);
+    scroll-margin-top: 4.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .about-layout {
+    width: min(100%, var(--max));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(10rem, 16rem) 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+  }
+
+  .about-portrait {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--ocean);
+    border: 3px solid rgba(10, 47, 138, 0.2);
+    box-shadow: 0 14px 36px rgba(10, 47, 138, 0.16);
+  }
+
+  .about-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  .about-kicker {
+    margin: 0 0 0.55rem;
+    color: var(--ocean);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .about-copy h2 {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .about-intro {
+    margin: 0 0 0.85rem;
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .about-body-text {
+    margin: 0 0 1.35rem;
+    color: var(--muted);
+    max-width: 36rem;
+  }
+
+  .about-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.6rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    background: var(--ocean);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+  }
+
+  .about-link:hover {
+    background: var(--ocean-deep);
+  }
+
+  .contact {
+    background: var(--ocean-deep);
+    color: #fff;
+    padding: clamp(3.5rem, 8vw, 5.5rem) var(--space);
+    scroll-margin-top: 5rem;
+  }
+
+  .contact-inner {
+    width: min(100%, 36rem);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #email {
+    scroll-margin-top: 40vh;
+  }
+
+  .contact h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+  }
+
+  .contact p {
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .mail {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+    padding-bottom: 0.15rem;
+  }
+
+  .mail:hover {
+    border-color: #fff;
+  }
+
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.25rem var(--space);
+    background: #050505;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+  }
+
+  .foot p {
+    margin: 0;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -14px, 0);
+    }
+  }
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(6px);
+    }
+  }
+
+  @keyframes draw-squiggle {
+    0% {
+      stroke-dashoffset: 120;
+    }
+    40%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes bubble-in {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .apps-block {
+    background: #0a1628;
+    color: #fff;
+    padding-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .apps-head {
+    width: min(100%, var(--max));
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 4.5rem) var(--space) 1.5rem;
+  }
+
+  .apps-head .games-kicker {
+    color: #a78bfa;
+  }
+
+  .apps-head h2 {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 8vw, 4.5rem);
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+
+  .apps-head .games-lead {
+    color: #9aa6b8;
+  }
+
+  .apps-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #a78bfa;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .apps-link:hover {
+    color: #fff;
+  }
+
+  .apps-library {
+    width: min(100%, var(--max));
+    margin: 0 auto;
+    padding: 0 var(--space);
+  }
+
+  .app-teaser {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: center;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: 2rem;
+    background:
+      radial-gradient(70% 80% at 0% 0%, rgba(139, 92, 246, 0.22), transparent 55%),
+      #121d33;
+    border: 1px solid rgba(167, 139, 250, 0.28);
+    scroll-margin-top: 5.5rem;
+    animation: bubble-in 0.8s var(--ease) both;
+    animation-delay: calc(var(--i) * 0.12s);
+  }
+
+  .app-teaser-media {
+    position: relative;
+  }
+
+  .app-badge {
+    border-color: rgba(167, 139, 250, 0.55) !important;
+    background: rgba(11, 18, 32, 0.85) !important;
+    color: #a78bfa !important;
+  }
+
+  .phone-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .phone-shot {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    background: #0b1220;
+    aspect-ratio: 9 / 16;
+  }
+
+  .phone-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mini-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 0.85rem;
+    margin-bottom: 0.85rem;
+    object-fit: cover;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35);
+  }
+
+  .dot.purple {
+    background: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+  }
+
+  .app-teaser-copy .status {
+    color: #a78bfa;
+  }
+
+  .app-teaser-copy h3 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.35rem);
+    letter-spacing: -0.03em;
+  }
+
+  .app-teaser-copy .blurb {
+    color: #9aa6b8;
+  }
+
+  .purple-tags li {
+    background: rgba(139, 92, 246, 0.18) !important;
+    color: #e9ddff !important;
+  }
+
+  .inline-link {
+    display: inline-block;
+    margin-top: 0.35rem;
+    color: #a78bfa;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .inline-link:hover {
+    color: #fff;
+  }
+
+  @media (max-width: 860px) {
+    .game-card,
+    .app-teaser {
+      grid-template-columns: 1fr;
+    }
+
+    .phone-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .about-layout {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .about-portrait {
+      width: min(70vw, 14rem);
+    }
+
+    .about-body-text {
+      margin-inline: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-copy,
+    .bubble,
+    .game-card,
+    .scroll-cue,
+    .squiggle-path {
+      animation: none;
+    }
+
+    .squiggle-path {
+      stroke-dashoffset: 0;
+    }
+
+    .btn:hover,
+    .game-card:hover,
+    .game-card:hover .card-media,
+    .game-card:hover .orb,
+    .game-card:hover .tags li {
+      transform: none;
+    }
+  }
+</style>
