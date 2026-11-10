@@ -11,7 +11,7 @@ export const site = {
   email: "philvdm@gmail.com",
   about: {
     headline: "About Me",
-    profileImage: "/images/profile.png",
+    profileImage: "/images/profile.jpg",
     intro:
       "I'm Phil VDM — an independent creator from South Africa building atmospheric games and useful student apps.",
     paragraphs: [
