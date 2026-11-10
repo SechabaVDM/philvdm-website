@@ -8,7 +8,7 @@ export const site = {
     "Portfolio of Phil VDM — games like Echoes of the Terminal and apps like StudyQuest.",
   tagline: "Games and apps that stay with you.",
   location: "South Africa",
-  email: "hello@philvdm.co.za",
+  email: "philvdm@gmail.com",
   about: {
     headline: "About Me",
     profileImage: "/images/profile.png",
